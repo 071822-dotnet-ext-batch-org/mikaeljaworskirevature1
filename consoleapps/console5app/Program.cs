@@ -6,7 +6,7 @@ namespace console5app
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Goodbye Cruel World");
+            Console.WriteLine("You were my brother Anakin! I loved you.");
         }
     }
 }
