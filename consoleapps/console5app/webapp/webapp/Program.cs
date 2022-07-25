@@ -57,7 +57,7 @@ namespace webapp
                //get the computers random choice
             
     
-        computerChoice = rand.Next((1000)% 7)+1;
+        computerChoice = rand.Next((1000)% 6)+1;
         Console.WriteLine(computerChoice);
 
                //evaluate the choices to determine the winner of the round
