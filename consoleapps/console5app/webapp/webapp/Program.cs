@@ -27,19 +27,34 @@ namespace webapp
         int numberOfTies = 0;
         string player1name = "";
         bool successfullConversion = false;
-        bool isTie = true;
+        //bool isTie = true;
+        bool gameOver = false;
+        bool nameEntry = true;
         string playagain = "";
 
                //get the users name
-        Console.WriteLine("What is your name?");
+while(true){
+
+
+       while(nameEntry){  
+        Console.WriteLine("What is your name?"); 
         player1name = Console.ReadLine();
 
-        Console.WriteLine($"Welcome to R-P-S-L-S, {player1name}");
+            
+        if(player1name.Length > 15)
+        {
+              Console.WriteLine("Error. Computer does not like long names.\nPlease type name that is less than 15 characters.");
+        }
+       else if(player1name.Length < 15)
+       {
+              Console.WriteLine($"Welcome to R-P-S-L-S, {player1name}");
+              break;
+       }
 
-                //a while loop for the tie scenario
-        while(true){
+       }         //a while loop for the tie scenario
         
-        while(isTie)
+        
+       while(playerWins < 2 && computerWins < 2)
         {
 
 
@@ -49,6 +64,7 @@ namespace webapp
         playerChoiceStr = Console.ReadLine();
 
         successfullConversion = Int32.TryParse(playerChoiceStr, out playerChoice);
+        
 
         
                 //REMEMBER TO VALIDATE the User's Input
@@ -85,38 +101,53 @@ namespace webapp
             //playerWins += 1;
             playerWins ++;
             //if user wins
+            //isTie = false;
 
-            isTie = false;
+
+            
         }
         
         else
         {
            Console.WriteLine($"Expected. {player1name} is not smarter than computer."); //if user wins
             computerWins++;
-
-            isTie = false;
+            //isTie = false;
             //if computer wins
         }
+  
+       if (computerWins == 2)
+       {
+              Console.WriteLine($"Computer is tired of winning.\nComputer wins {computerWins}/3.");
+              gameOver = true;
+       }
 
+       else if (playerWins == 2)
+       {
+              Console.WriteLine($"{player1name} is tired of winning.\nComputer wins {playerWins}/3.");
+              gameOver = true;
+       }
 
+       
+          
+     }  
           Console.WriteLine($"Shall we play again?\nEnter 'Y' to play and 'N' to quit."); 
           playagain = Console.ReadLine();
           if(playagain == "Y" || String.Equals("Y", playagain, StringComparison.OrdinalIgnoreCase))
                 {
                 Console.WriteLine($"Let's Begin.");
-                         isTie = true;
+                         //isTie = true;
                 }
           else
                 {
                     //continue; //will end the current loop and immediately start the next iteration of the next loop
                     Console.WriteLine("Computer shall await your return.");
+                    Console.WriteLine($"Rounds won {playerWins}.\nRounds lost {computerWins}.\nNumber of Ties {numberOfTies}");
                     break; //will break the current loop.
 
-                }
-                
-            } 
+                }       
+       
         
-        }        //we know:
+     }        //we know:
                 // 1 == rock 2 == paper 3 == scissors 4 == lizard 5 == spock
 
 
