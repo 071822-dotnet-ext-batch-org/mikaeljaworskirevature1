@@ -7,10 +7,10 @@ namespace webapp
         static void Main(string[] args)
         {
                 //Welcome message
-        Console.WriteLine("Welcome to a game of Rock, Paper, Scissors, Lizard, Spock!");
+        Console.WriteLine("\t\t\tWelcome to a game of Rock, Paper, Scissors, Lizard, Spock!");
 
                //Instructions to play... explanation of the game flow. which keys are used, etc
-        Console.WriteLine("Press the number corresponding to Rock, Paper, Scissors, Lizard, or Spock.\nThe Computer will make its choice and the winner shall be announced.\n Can you outsmart the computer?\nTo play, press Enter.");
+        Console.WriteLine("\t\t\tPress the number corresponding to Rock, Paper, Scissors, Lizard, or Spock.\n\t\t\t\tThe Computer will make its choice and the winner shall be announced.\n\t\t\tCan you outsmart the computer?\nTo play, press Enter.");
 
                //start the game...by pressing ENTER
         Console.ReadLine();
@@ -28,7 +28,8 @@ namespace webapp
         string player1name = "";
         bool successfullConversion = false;
         //bool isTie = true;
-        bool gameOver = false;
+        bool error = true;
+        bool gamePlay = true;
         bool nameEntry = true;
         string playagain = "";
 
@@ -53,30 +54,87 @@ while(true){
 
        }         //a while loop for the tie scenario
         
-        
-       while(playerWins < 2 && computerWins < 2)
-        {
-
-
+       while(error) 
+   {       
+       if (playerWins < 2 && computerWins < 2)
+       { 
                //get the users choice
+            
+              Console.WriteLine("Choose your Weapon.\n\t1 for Rock\n\t2 for Paper\n\t3 for Scissors\n\t4 for Lizard\n\t5 for Spock.");
+              playerChoiceStr = Console.ReadLine();
+              
+       
+       
+       while(gamePlay)
+              {       
+              if (playerChoiceStr.Equals( "1" )) 
+              {
 
-        Console.WriteLine("Choose your Weapon.\n\t1 for Rock\n\t2 for Paper\n\t3 for Scissors\n\t4 for Lizard\n\t5 for Spock.");
-        playerChoiceStr = Console.ReadLine();
-
-        successfullConversion = Int32.TryParse(playerChoiceStr, out playerChoice);
-        
-
-        
-                //REMEMBER TO VALIDATE the User's Input
-        
+              successfullConversion = Int32.TryParse(playerChoiceStr, out playerChoice);
+                //REMEMBER TO VALIDATE the User's Input           
 
                //get the computers random choice
-            
-    
-        computerChoice = rand.Next((1000)% 6)+1;
-        Console.WriteLine(computerChoice);
+              computerChoice = rand.Next((1000)% 6)+1;
+              Console.WriteLine(computerChoice);
+                    gamePlay = true;
+              }
 
-               //evaluate the choices to determine the winner of the round
+              else if (playerChoiceStr.Equals( "2" )) 
+              {
+
+              successfullConversion = Int32.TryParse(playerChoiceStr, out playerChoice);
+                //REMEMBER TO VALIDATE the User's Input           
+
+               //get the computers random choice
+              computerChoice = rand.Next((1000)% 6)+1;
+              Console.WriteLine(computerChoice);
+                     gamePlay = true;
+              }
+
+              else if (playerChoiceStr.Equals( "3" )) 
+              {
+
+              successfullConversion = Int32.TryParse(playerChoiceStr, out playerChoice);
+                //REMEMBER TO VALIDATE the User's Input           
+
+               //get the computers random choice
+              computerChoice = rand.Next((1000)% 6)+1;
+              Console.WriteLine(computerChoice);  
+
+                     gamePlay = true;
+              }
+
+              else if (playerChoiceStr.Equals( "4" )) 
+              {
+
+              successfullConversion = Int32.TryParse(playerChoiceStr, out playerChoice);
+                //REMEMBER TO VALIDATE the User's Input           
+
+               //get the computers random choice
+              computerChoice = rand.Next((1000)% 6)+1;
+              Console.WriteLine(computerChoice);   
+                     gamePlay = true;
+              }
+              
+              else if (playerChoiceStr.Equals( "5" )) 
+              {
+
+              successfullConversion = Int32.TryParse(playerChoiceStr, out playerChoice);
+                //REMEMBER TO VALIDATE the User's Input           
+
+               //get the computers random choice
+              computerChoice = rand.Next((1000)% 6)+1;
+              Console.WriteLine(computerChoice);  
+                     gamePlay = true;
+              }
+
+              else 
+              {
+                     Console.WriteLine("Invalid Input.");
+              }
+
+            }
+  }             //evaluate the choices to determine the winner of the round
         if (computerChoice == playerChoice){
             Console.WriteLine($"Error. Computer and {player1name} have the same idea.\nPlease stop thinking like computer.");
             numberOfTies++;
@@ -118,16 +176,15 @@ while(true){
        if (computerWins == 2)
        {
               Console.WriteLine($"Computer is tired of winning.\nComputer wins {computerWins}/3.");
-              gameOver = true;
+              //gameOver = true;
        }
 
        else if (playerWins == 2)
        {
               Console.WriteLine($"{player1name} is tired of winning.\nComputer wins {playerWins}/3.");
-              gameOver = true;
+              //gameOver = true;
        }
 
-       
           
      }  
           Console.WriteLine($"Shall we play again?\nEnter 'Y' to play and 'N' to quit."); 
@@ -145,7 +202,7 @@ while(true){
                     break; //will break the current loop.
 
                 }       
-       
+       }
         
      }        //we know:
                 // 1 == rock 2 == paper 3 == scissors 4 == lizard 5 == spock
@@ -176,6 +233,6 @@ while(true){
               
 
         
-        }
-    }
-}   
+  }
+}
+   
