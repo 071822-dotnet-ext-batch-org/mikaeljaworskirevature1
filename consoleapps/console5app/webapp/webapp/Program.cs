@@ -28,8 +28,8 @@ namespace webapp
         string player1name = "";
         bool successfullConversion = false;
         //bool isTie = true;
-        bool error = true;
-        bool gamePlay = true;
+        //bool error = true;
+        //bool gamePlay = true;
         bool nameEntry = true;
         string playagain = "";
 
@@ -54,21 +54,14 @@ while(true){
 
        }         //a while loop for the tie scenario
         
-       while(error) 
+       while(playerWins < 2 && computerWins < 2) 
    {       
-       if (playerWins < 2 && computerWins < 2)
-       { 
                //get the users choice
             
               Console.WriteLine("Choose your Weapon.\n\t1 for Rock\n\t2 for Paper\n\t3 for Scissors\n\t4 for Lizard\n\t5 for Spock.");
               playerChoiceStr = Console.ReadLine();
               
        
-       
-       while(gamePlay)
-              {       
-              if (playerChoiceStr.Equals( "1" )) 
-              {
 
               successfullConversion = Int32.TryParse(playerChoiceStr, out playerChoice);
                 //REMEMBER TO VALIDATE the User's Input           
@@ -76,65 +69,10 @@ while(true){
                //get the computers random choice
               computerChoice = rand.Next((1000)% 6)+1;
               Console.WriteLine(computerChoice);
-                    gamePlay = true;
-              }
 
-              else if (playerChoiceStr.Equals( "2" )) 
-              {
 
-              successfullConversion = Int32.TryParse(playerChoiceStr, out playerChoice);
-                //REMEMBER TO VALIDATE the User's Input           
 
-               //get the computers random choice
-              computerChoice = rand.Next((1000)% 6)+1;
-              Console.WriteLine(computerChoice);
-                     gamePlay = true;
-              }
-
-              else if (playerChoiceStr.Equals( "3" )) 
-              {
-
-              successfullConversion = Int32.TryParse(playerChoiceStr, out playerChoice);
-                //REMEMBER TO VALIDATE the User's Input           
-
-               //get the computers random choice
-              computerChoice = rand.Next((1000)% 6)+1;
-              Console.WriteLine(computerChoice);  
-
-                     gamePlay = true;
-              }
-
-              else if (playerChoiceStr.Equals( "4" )) 
-              {
-
-              successfullConversion = Int32.TryParse(playerChoiceStr, out playerChoice);
-                //REMEMBER TO VALIDATE the User's Input           
-
-               //get the computers random choice
-              computerChoice = rand.Next((1000)% 6)+1;
-              Console.WriteLine(computerChoice);   
-                     gamePlay = true;
-              }
-              
-              else if (playerChoiceStr.Equals( "5" )) 
-              {
-
-              successfullConversion = Int32.TryParse(playerChoiceStr, out playerChoice);
-                //REMEMBER TO VALIDATE the User's Input           
-
-               //get the computers random choice
-              computerChoice = rand.Next((1000)% 6)+1;
-              Console.WriteLine(computerChoice);  
-                     gamePlay = true;
-              }
-
-              else 
-              {
-                     Console.WriteLine("Invalid Input.");
-              }
-
-            }
-  }             //evaluate the choices to determine the winner of the round
+               //evaluate the choices to determine the winner of the round
         if (computerChoice == playerChoice){
             Console.WriteLine($"Error. Computer and {player1name} have the same idea.\nPlease stop thinking like computer.");
             numberOfTies++;
@@ -203,7 +141,7 @@ while(true){
 
                 }       
        }
-        
+       } 
      }        //we know:
                 // 1 == rock 2 == paper 3 == scissors 4 == lizard 5 == spock
 
@@ -234,5 +172,4 @@ while(true){
 
         
   }
-}
    
