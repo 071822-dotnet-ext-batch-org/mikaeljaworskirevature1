@@ -7,7 +7,16 @@ namespace TransportApp
 {
     public class Transportation
     {
+    
+    public Transportation (string x, int y)
+    {
+        this.color = x;
+        this.numOfWheels = y;
+    } 
 
+     public Transportation(){}
+
+     
         public int numOfWheels {get; set;}
         public int numOfDoors {get; set;}
         public string color {get; set;}
