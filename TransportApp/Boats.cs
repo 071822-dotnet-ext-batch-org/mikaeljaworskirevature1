@@ -7,7 +7,7 @@ namespace TransportApp
 {
     public class Boats : Transportation
     {
-         public Boats() : base()
+         public Boats()
         {
             this.numOfDoors = 2;
             this.numOfWheels = 0;

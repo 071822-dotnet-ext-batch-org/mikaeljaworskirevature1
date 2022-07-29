@@ -7,7 +7,7 @@ namespace TransportApp
 {
     public class Cars : Transportation
     {
-        public Cars() : base()
+        public Cars()
         {
             this.numOfDoors = 4;
             this.numOfWheels.Equals(4);
