@@ -1,0 +1,10 @@
+class Solution {
+    static void Main(String[] args) {
+        long[] x = Array.ConvertAll(Console.ReadLine().Split(' '), long.Parse);
+        long max = x.Sum(), min = max;
+        max -= x.Min();
+        min -= x.Max();
+        Console.WriteLine(min + " " + max);
+    }
+}
+

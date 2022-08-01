@@ -20,7 +20,8 @@ namespace _8_LoopsChallenge
         /// <returns></returns>
         public static int UseFor(List<int> x)
         {
-            throw new NotImplementedException("UseFor() is not implemented yet.");
+            
+            //throw new NotImplementedException("UseFor() is not implemented yet.");
         }
 
         /// <summary>
