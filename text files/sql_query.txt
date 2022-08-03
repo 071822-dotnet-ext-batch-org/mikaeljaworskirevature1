@@ -1,0 +1,15 @@
+1.)SELECT COUNT (AddressID), CountryRegion FROM [SalesLT].[Address] GROUP BY CountryRegion
+
+2.)SELECT CustomerId, FirstName, LastName, Country FROM [dbo].[Customer] WHERE Country LIKE 'Brazil'
+
+3.)SELECT EmployeeId, Title, LastName FROM [dbo].[Employee] WHERE Title LIKE '%Agent%'
+
+4.)SELECT DISTINCT BillingCountry FROM [dbo].[Invoice]
+
+5.)SELECT InvoiceId, InvoiceDate, Total FROM [dbo].[Invoice] WHERE InvoiceDate LIKE '%2009%'
+
+6.)SELECT Count(InvoiceId) FROM dbo.Invoice WHERE InvoiceId = '37'
+
+7.)SELECT BillingCountry, COUNT(BillingCountry) AS "Number of Orders" FROM [dbo].[Invoice] GROUP BY BillingCountry
+
+8.)SELECT BillingCountry, SUM(Total) FROM [dbo].[Invoice] GROUP BY BillingCountry ORDER BY SUM(Total) DESC
