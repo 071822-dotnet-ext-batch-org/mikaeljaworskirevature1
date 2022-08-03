@@ -1,0 +1,36 @@
+CREATE TABLE Customers
+	(
+		CustomerId INT NOT NULL IDENTITY (1, 1),
+		FirstName NVARCHAR(20) NOT NULL,
+		LastName NVARCHAR(30) NOT NULL,
+		Notes NTEXT 
+	)
+;
+
+CREATE TABLE Addresses 
+	(
+		AddressId INT NOT NULL IDENTITY(1, 1),
+		NumberStreet NVARCHAR(50) NOT NULL,
+		AptSuite NVARCHAR(7) NULL, 
+		City NVARCHAR(85) NOT NULL,
+		StateTerritory NVARCHAR(50) NOT NULL,
+		Country NVARCHAR(50) NOT NULL,
+		ZipCode CHAR(5) NOT NULL,
+		CountryCode SMALLINT NOT NULL CHECK (CountryCode between 0 and 999)
+	)
+;
+
+CREATE TABLE Orders
+	(
+		OrderId INT NOT NULL IDENTITY (1, 1),
+		OrderDate DATETIME DEFAULT (GETDATE()),
+		OrderTotal FLOAT(6, 2) NOT NULL,
+		
+		FK_CustomerId INT FOREIGN KEY
+		REFERENCES dbo.Customers (CustomerId),
+
+		FK_AddressId INT FOREIGN KEY
+		REFERENCES dbo.Addresses (AddressId),
+	)
+;
+
