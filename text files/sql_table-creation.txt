@@ -24,7 +24,7 @@ CREATE TABLE Orders
 	(
 		OrderId INT NOT NULL IDENTITY (1, 1),
 		OrderDate DATETIME DEFAULT (GETDATE()),
-		OrderTotal FLOAT(6, 2) NOT NULL,
+		OrderTotal DECIMAL(6, 2) NOT NULL,
 		
 		FK_CustomerId INT FOREIGN KEY
 		REFERENCES dbo.Customers (CustomerId),
@@ -34,3 +34,83 @@ CREATE TABLE Orders
 	)
 ;
 
+CREATE TABLE CustomerAddressJunction
+	(
+		FK_Customer INT FOREIGN KEY REFERENCES Customers(CustomerId) ,
+		FK_Address INT FOREIGN KEY REFERENCES Addresses(AddressId)
+	)
+;
+
+-- add a new constraint to a table column.
+	ALTER TABLE Addresses
+	ADD CONSTRAINT valid_country_code CHECK(CountryCode between 1 and 998);
+-- if you don't have a PK in a table, yo can add one later.
+	ALTER TABLE Addresses
+	ADD PRIMARY KEY (AddressId);
+	
+	ALTER TABLE Customers
+	ADD PRIMARY KEY (CustomerId);
+	
+	ALTER TABLE Orders
+	ADD PRIMARY KEY (OrderId);
+--delete a record from a table
+	DELETE FROM Addresses WHERE CountryCode = 0;
+
+08-04-2022 Group Assignment in AM
+
+INSERT INTO Customers (FirstName, LastName) 
+VALUES ('Sam', 'Fosse');
+Insert INTO Addresses (NumberStreet, AptSuite, City, StateTerritory, Country, ZipCode, CountryCode)
+VALUES ('123 Sesame Street', '456', 'New York', 'New York', 'United States', '10003', '1');
+INSERT INTO Addresses (NumberStreet, AptSuite, City, StateTerritory, Country, ZipCode, CountryCode)
+VALUES ('12 Boom Bow', '567', 'Los Angeles', 'California', 'United States', '90020', '1');
+INSERT INTO CustomerAddressJunction (FK_Customer, FK_Address)
+VALUES (3, 1);
+INSERT INTO CustomerAddressJunction (FK_Customer, FK_Address)
+VALUES (3, 2);
+INSERT INTO Orders (FK_Customer, FK_Address, OrderDate, OrderTotal)
+VALUES(3, 1, 08-04-2022, 220.86);
+INSERT INTO Orders (FK_Customer, FK_Address, OrderDate, OrderTotal)
+VALUES(3, 2, 08-04-2022, 220.86);
+
+
+INSERT INTO Customers (FirstName, LastName) 
+VALUES ('Rebecca', 'Fosse');
+Insert INTO Addresses (NumberStreet, AptSuite, City, StateTerritory, Country, ZipCode, CountryCode)
+Insert INTO Addresses (NumberStreet, AptSuite, City, StateTerritory, Country, ZipCode, CountryCode)
+VALUES ('13 Bow Boom', '678', 'Los Angeles', 'California', 'United States', '90210', '1');
+INSERT INTO CustomerAddressJunction (FK_Customer, FK_Address)
+VALUES (4, 2);
+INSERT INTO CustomerAddressJunction (FK_Customer, FK_Address)
+VALUES (4, 3);
+INSERT INTO Orders (FK_Customer, FK_Address, OrderDate, OrderTotal)
+VALUES(4, 2, 08-04-2022, 220.86);
+INSERT INTO Orders (FK_Customer, FK_Address, OrderDate, OrderTotal)
+VALUES(4, 3, 08-04-2022, 220.86);
+
+
+--trigger and subquerie example table
+
+CREATE TABLE Customer_Audit
+	(
+		ChangeId INT PRIMARY KEY IDENTITY (1, 1),
+		CUstomerID INT NOT NULL,
+		FirstName NVARCHAR(30),
+		LastName NVARCHAR(30),
+		UpdatedAt DATETIME DEFAULT(GETDATE()),
+		OperationType CHAR(3),
+		CONSTRAINT Opp_Type_INS_or_Del CHECK (OperationType = 'DEL' or OperationType = 'INS')
+	)
+;
+
+--2) Create the AFTER trigger
+
+CREATE TRIGGER CustomerAdded ON Customers
+AFTER INSERT, DELETE
+AS
+	INSERT INTO Customer_Audit (CustomerID, FirstName, LastName, OperationType)
+		SELECT CustomerID, FirstName, LastName, 'INS'
+		FROM INSERTED --need to verify
+UNION 
+		SELECT CustomerID, FirstName, LastName, 'INS'
+		FROM DELETED --need to verify
