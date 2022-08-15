@@ -119,7 +119,7 @@ namespace p1
         //method to find an existing password associated with a manager or employee account
         public bool ExistingPassword(Guid passwordid)
         {
-            using (SqlCommand command = new SqlCommand("SELECT Top 1 Pw_Id FROM Passwords WHERE Pw_Id = @z", stash))
+            using (SqlCommand command = new SqlCommand("SELECT Top 1 Pw_Id Em FROM Passwords WHERE Pw_Id = @z", stash))
             {
                 command.Parameters.AddWithValue("@z", passwordid);
                 stash.Open();
@@ -140,15 +140,13 @@ namespace p1
         } //EoM
         //method to create a new manager or employee password
 
-        //TODO create two methods for password creation; one for managers, one for employees
-        //      methods must specify the variables of insert so that one of the fk's are left null
+        //creates employee pw with custom values to ensure manager id returns null
         public Managers  CreateEmployeePassword(Passwords p)
         {
-            using (SqlCommand command = new SqlCommand($"INSERT INTO cl.Passwords VALUES(@Pw_Id, @EId, @M_Id)", stash))
+            using (SqlCommand command = new SqlCommand($"INSERT (Pw_Id, E_Id) INTO cl.Passwords VALUES(@Pw_Id, @EId)", stash))
             {
                 command.Parameters.AddWithValue("@Pw_Id", p.PassId);
                 command.Parameters.AddWithValue("@EId", p.FkEmp);
-                command.Parameters.AddWithValue("@M_Id", p.FkMan);
                 stash.Open();
                 int ret = command.ExecuteNonQuery();
     
@@ -166,8 +164,56 @@ namespace p1
             }
         } //EoM
 
+        //creates manager pw with custome values to ensure employee id returns null
+        public Managers  CreateManagerPassword(Passwords p)
+        {
+            using (SqlCommand command = new SqlCommand($"INSERT (Pw_Id, M_Id) INTO cl.Passwords VALUES(@Pw_Id, @M_Id)", stash))
+            {
+                command.Parameters.AddWithValue("@Pw_Id", p.PassId);
+                command.Parameters.AddWithValue("@M_Id", p.FkMan);
+                stash.Open();
+                int ret = command.ExecuteNonQuery();
+    
+
+                if (ret == 1)
+                {
+                    stash.Close();
+                    return ret;
+                }
+                else
+                {
+                    stash.Close();
+                    return ret;
+                }
+            }
+        }
+        
+        
         //TODO create a ticket creation method. tickets can only be made by employees
         //      make the default ticket status "pending". employees can not change the ticket type status.
+        public Tickets CreateTicketQuery(Tickets t)
+        {
+            using (SqlCommand command = new SqlCommand($"INSERT INTO cl.Passwords VALUES(@ticketid)", stash))
+            {
+                command.Parameters.AddWithValue("@Pw_Id", p.PassId);
+                command.Parameters.AddWithValue("@M_Id", p.FkMan);
+                stash.Open();
+                int ret = command.ExecuteNonQuery();
+    
+
+                if (ret == 1)
+                {
+                    stash.Close();
+                    return ret;
+                }
+                else
+                {
+                    stash.Close();
+                    return ret;
+                }
+            }
+        }// EoM
+        
         //TODO CREATE a change ticket type query that creates a status for the existing tickets. 
         //      make sure it doesnt create new tickets. only checks for existing ones and then changes the status.    
 
