@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
 
-namespace p1
+namespace RepoLayer
 {
     public class Dbs_Access
     {
+
+        //TODO edit the code to call the accounts class under models so the accounts on the db can be updated accordingly
+        //reference mark adodotnetaccess class
         private static readonly SqlConnection stash = new SqlConnection("Server=tcp:mjrevatureserver.database.windows.net,1433;Initial Catalog=mjaworskiproject1;Persist Security Info=False;User ID=master;Password=REVATURubie$235;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         
         //method to find an existing employee account
@@ -33,7 +34,7 @@ namespace p1
 
         } //EoM
         //method to create a new employee account
-        public Employees  CreateEmployee(Employees e)
+        public Employees CreateEmployee(Employees e)
         {
             using (SqlCommand command = new SqlCommand($"INSERT INTO cl.Employees VALUES(@userid, @fname, @lname, @address, @aptsuite, @city, @state, @country, @dob)", stash))
             {
@@ -119,7 +120,7 @@ namespace p1
         //method to find an existing password associated with a manager or employee account
         public bool ExistingPassword(Guid passwordid)
         {
-            using (SqlCommand command = new SqlCommand("SELECT Top 1 Pw_Id Em FROM Passwords WHERE Pw_Id = @z", stash))
+            using (SqlCommand command = new SqlCommand("SELECT Top 1 Pw_Id FROM Passwords WHERE Pw_Id = @z", stash))
             {
                 command.Parameters.AddWithValue("@z", passwordid);
                 stash.Open();
@@ -188,15 +189,17 @@ namespace p1
             }
         }
         
-        
-        //TODO create a ticket creation method. tickets can only be made by employees
-        //      make the default ticket status "pending". employees can not change the ticket type status.
+        //mehtod creates a new ticket and sends it to the db for storage.
         public Tickets CreateTicketQuery(Tickets t)
         {
-            using (SqlCommand command = new SqlCommand($"INSERT INTO cl.Passwords VALUES(@ticketid)", stash))
+            using (SqlCommand command = new SqlCommand($"INSERT INTO cl.Passwords VALUES(@ticketid, @tickettype, @ticketdate, @ticketamount, @notes, @m_id, @e_id)", stash))
             {
-                command.Parameters.AddWithValue("@Pw_Id", p.PassId);
-                command.Parameters.AddWithValue("@M_Id", p.FkMan);
+                command.Parameters.AddWithValue("@ticketId", t.TickedId);
+                command.Parameters.AddWithValue("@ticketype", t.TicketType);
+                command.Parameters.AddWithValue("@ticketdate", t.TicketDate);
+                command.Parameters.AddWithValue("@notes", t.Notes);
+                command.Parameters.AddWithValue("@m_id", t.M_Id);
+                command.Parameters.AddWithValue("@e_id", t.E_Id);
                 stash.Open();
                 int ret = command.ExecuteNonQuery();
     
@@ -213,9 +216,77 @@ namespace p1
                 }
             }
         }// EoM
-        
-        //TODO CREATE a change ticket type query that creates a status for the existing tickets. 
+   
+        //change ticket type query that creates a status for the existing tickets. 
         //      make sure it doesnt create new tickets. only checks for existing ones and then changes the status.    
+        public bool ExistingTicket(Guid ticketid)
+        {
+            using (SqlCommand command = new SqlCommand("SELECT Top 1 TicketId Em FROM cl.Tickets WHERE TicketId = @t", stash))
+            {
+                command.Parameters.AddWithValue("@t", ticketid);
+                stash.Open();
+                SqlDataReader ret = command.ExecuteReader();
+
+                if(ret.Read())
+                {
+                    stash.Close();
+                    return true;
+                }
+                else
+                {
+                    stash.Close();
+                    return false;
+                }
+            }
+
+        }
+
+        // changes the status of the ticket from the default "pending" to "approved"
+        public Tickets TicketStatusApp(Tickets st)
+        {
+            using (SqlCommand command = new SqlCommand($"UPDATE cl.Tickets SET TicketType = 'Approved' WHERE M_Id = @m", stash))
+            {
+                command.Parameters.AddWithValue("@m", st.M_Id);
+                stash.Open();
+                int ret = command.ExecuteNonQuery();
+    
+
+                if (ret == 1)
+                {
+                    stash.Close();
+                    return ret;
+                }
+                else
+                {
+                    stash.Close();
+                    return ret;
+                }
+            }
+        }
+
+
+        // changes the status of the ticket from the default "pending" to "denied"
+        public Tickets TicketStatusDen(Tickets st)
+        {
+            using (SqlCommand command = new SqlCommand($"UPDATE cl.Tickets SET TicketType = 'Denied' WHERE M_Id = @m", stash))
+            {
+                command.Parameters.AddWithValue("@m", st.M_Id);
+                stash.Open();
+                int ret = command.ExecuteNonQuery();
+    
+
+                if (ret == 1)
+                {
+                    stash.Close();
+                    return ret;
+                }
+                else
+                {
+                    stash.Close();
+                    return ret;
+                }
+            }
+        }
 
     } //EoC
 } //EoN

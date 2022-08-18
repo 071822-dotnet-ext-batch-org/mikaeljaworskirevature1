@@ -4,13 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Data.SqlTypes;
 
-namespace p1
+namespace Models
 {
-    public class Users
+    public class Managers
     {
-        //use this class to make the connection to the database with both managers and employees
-        //refer to mark's players in RpsConsole
-        public Guid UserId { get; set;} = Guid.NewGuid();
+
         public string Fname { get; set;}
         public string Lname { get; set;}
         public DateTime Dob { get; set;}
@@ -19,6 +17,19 @@ namespace p1
         public string City { get; set;}
         public string State { get; set;}
         public string Country {get; set;}
-        
+        public Guid StaffId { get; set;} = Guid.NewGuid();
+
+        public Managers(string fname, string lname, string address, 
+                        string city, string state, string country)
+        {
+            this.Fname = fname;
+            this.Lname = lname;
+            this.Address = address;
+            this.City = city;
+            this.State = state;
+            this.Country = country;
+
+        }
+    
     }
 }

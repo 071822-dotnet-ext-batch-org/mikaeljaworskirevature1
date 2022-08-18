@@ -4,12 +4,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 
-namespace p1
+namespace Models
 {
-    public class Employees : Users
+    public class Employees
     {
        //use this class object to define Employees
-       //refer to mark's playters in RpsConsoleApp;   
+        public string Fname { get; set;}
+        public string Lname { get; set;}
+        public DateTime Dob { get; set;}
+        public string Address { get; set;}
+        public int AptSuite { get; set;}
+        public string City { get; set;}
+        public string State { get; set;}
+        public string Country {get; set;}
+         
+        
         public Employees (string fname, string lname, string address, 
                         string city, string state, string country)
         {
