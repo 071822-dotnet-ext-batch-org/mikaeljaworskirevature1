@@ -16,8 +16,20 @@ public class MikaelController : ControllerBase
         }
 
 
-        // logs in the user input through http requests
-        [HttpPost("api/LoginUserAsync")]
+    // creates a new manager account in the user input through http requests
+    [HttpPost("api/NewManagerAsync")]
+        public async Task<ActionResult> CreateUserAsync(Managers m)
+        {
+            if (ModelState.IsValid)
+            {
+                Managers newman = await this._begin.NewUserAsync(m);
+                return Ok(newman);
+            }
+            return null;
+        }
+
+    // logs in the user input through http requests
+    [HttpPost("api/LoginUserAsync")]
         public async Task<ActionResult> LoginUserAsync(Login login)
         {
             if (ModelState.IsValid)
@@ -51,26 +63,26 @@ public class MikaelController : ControllerBase
         }
 
         [HttpPut("api/StatusAppAsync")]
-        public async Task<ActionResult<Tickets>> StatusAppAsync(Tickets approved)
+        public async Task<ActionResult<ApproveDto>> StatusAppAsync(ApproveDto update)
         {
             if (ModelState.IsValid)
             {
                 //send the tickets and managers to BusinessLayer
-                Tickets approvedTicket = await this._begin.TicketStatusAppAsync(approved);
+                ApproveDto approvedTicket = await this._begin.TicketStatusAppAsync(update);
                 return approvedTicket;
             }
-            else return Conflict(approved);
+            else return Conflict(update);
         }
         
         [HttpPut("api/StatusDenAsync")]
-        public async Task<ActionResult<Tickets>> StatusDenAsync(Tickets denied)
+        public async Task<ActionResult<DeniedDto>> StatusDenAsync(DeniedDto update)
         {
             if (ModelState.IsValid)
             {
                 //send the tickets and managers to BusinessLayer
-                Tickets deniedTicket = await this._begin.TicketStatusDenAsync(denied);
+                DeniedDto deniedTicket = await this._begin.TicketStatusDenAsync(update);
                 return deniedTicket;
             }
-            else return Conflict(denied);
+            else return Conflict(update);
         }
     }

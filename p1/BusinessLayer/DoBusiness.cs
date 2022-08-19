@@ -20,26 +20,28 @@ namespace BusinessLayer
             return list;
         }
 
-        //takes the types from managers and tickets class objects and returns data from the ticket status app method in the repo
+        //TODOtakes the types from managers and tickets class objects and returns data from the ticket status app method in the repo
         // allows us to update the ticket status to approved if user is using a manager's account.
-        public async Task<Tickets> TicketStatusAppAsync(Tickets approved, Managers manager)
+        public async Task<ApproveDto> TicketStatusAppAsync(ApproveDto approve)
         {
-            if (await this._repo.GetManagerAsync(manager.UserId))
+            if (await this._repo.GetManagerAsync(approve.managerid))
             {
-            Tickets approvedticket = await this._repo.TicketStatusAppAsync(approved);
-            return approvedticket;
+                ApproveDto approvedticket = await this._repo.TicketStatusAppAsync(approve.ticketid, approve.approvedstatus);
+                return approvedticket;
             }
             else return null;
         }
 
-        //takes the types from managers and tickets class objects and returns data from the ticket status app method in the repo
-        // allows us to update the ticket status to denied if user is using a manager's account.
-        public async Task<Tickets> TicketStatusDenAsync(Tickets approved, Managers manager)
+        ////takes the types from managers and tickets class objects and returns data from the ticket status app method in the repo
+        //// allows us to update the ticket status to denied if user is using a manager's account.
+
+        ////TODO create a new dto with the folowing methods 
+        public async Task<DeniedDto> TicketStatusDenAsync(DeniedDto deny)
         {
-            if (await this._repo.GetManagerAsync(manager.UserId))
+            if (await this._repo.GetManagerAsync(deny.managerid))
             {
-            Tickets approvedticket = await this._repo.TicketStatusDenAsync(approved);
-            return approvedticket;
+                DeniedDto approvedticket = await this._repo.TicketStatusDenAsync(deny.ticketid, deny.deniedstatus);
+                return approvedticket;
             }
             else return null;
         }
@@ -57,6 +59,22 @@ namespace BusinessLayer
         public async Task<Login> GetLoginAsync(Login newentry)
         {
             Login login = await this._repo.GetLoginAsync(newentry);
+            return login;
+        }
+
+        //takes the employees class object and inputs its types in the the get create new user method from the dbs class
+        //allows us to create a new account.
+        //public async Task<Employees> NewUserEmpAsync(Employees newentry)
+        //{
+        //    Employees login = await this._repo.NewUserEmpAsync(newentry);
+        //    return login;
+        //}
+
+        //takes the managers class object and inputs its types in the the get create new user method from the dbs class
+        //allows us to create a new account.
+        public async Task<Managers> NewUserAsync(Managers newentry)
+        {
+            Managers login = await this._repo.NewUserAsync(newentry);
             return login;
         }
 
