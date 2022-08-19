@@ -13,13 +13,36 @@ namespace RepoLayer
         
         //method to create a new employee account w/ default employee status
         //method utilizes a db procedure to automate process without a local query being written
-        /*
-        public async Task<Employees> CreateEmployeeAsync(Employees n)
+        //public async Task<Employees> NewUserEmpAsync(Employees n)
+        //{
+        //    SqlConnection stash = new SqlConnection("Server=tcp:mjrevatureserver.database.windows.net,1433;Initial Catalog=mjaworskiproject1;Persist Security Info=False;User ID=master;Password=REVATURubie$235;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+        //    using (SqlCommand command = new SqlCommand($"tk.Add_Account", stash))
+        //    {
+        //        command.CommandType = CommandType.StoredProcedure; //wanted to have the procedure generate a fresh guid but will have to refactor that another time.
+        //        command.Parameters.AddWithValue("@fname", n.Fname);
+        //        command.Parameters.AddWithValue("@lname", n.Lname);
+        //        command.Parameters.AddWithValue("@username", n.Username);
+        //        command.Parameters.AddWithValue("@pw", n.PW);
+        //        command.Parameters.AddWithValue("@userid", n.UserId);
+        //        stash.Open();
+        //        int ret = await command.ExecuteNonQueryAsync();
+
+        //        if (ret > 1)
+        //        {
+        //            return n;
+        //        }
+        //        stash.Close();
+        //        return null;
+        //    }
+        //} //EoM
+
+
+        public async Task<Managers> NewUserAsync(Managers n)
         {
             SqlConnection stash = new SqlConnection("Server=tcp:mjrevatureserver.database.windows.net,1433;Initial Catalog=mjaworskiproject1;Persist Security Info=False;User ID=master;Password=REVATURubie$235;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-            using (SqlCommand command = new SqlCommand($"tk.Add_Account", stash))
+            using (SqlCommand command = new SqlCommand($"tk.Add_Acccount", stash))
             {
-                command.CommandType = CommandType.StoredProcedure; 
+                command.CommandType = CommandType.StoredProcedure; //wanted to have the procedure generate a fresh guid but will have to refactor that another time.
                 command.Parameters.AddWithValue("@fname", n.Fname);
                 command.Parameters.AddWithValue("@lname", n.Lname);
                 command.Parameters.AddWithValue("@username", n.Username);
@@ -28,17 +51,15 @@ namespace RepoLayer
                 command.Parameters.AddWithValue("@ismanager", n.IsManager);
                 stash.Open();
                 int ret = await command.ExecuteNonQueryAsync();
-                while (ret > 0)
+
+                if (ret > 1)
                 {
-                    return ret;
+                    return n;
                 }
-                
                 stash.Close();
                 return null;
             }
         } //EoM
-        */
-        
         //method to find an existing password associated with a manager or employee account
         /*
         public async Task<bool> ExistingPasswordAsync(string password)
@@ -71,7 +92,7 @@ namespace RepoLayer
         public async Task<Login> GetLoginAsync(Login login)
         {
             SqlConnection stash = new SqlConnection("Server=tcp:mjrevatureserver.database.windows.net,1433;Initial Catalog=mjaworskiproject1;Persist Security Info=False;User ID=master;Password=REVATURubie$235;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-            using (SqlCommand command = new SqlCommand("SELECT UserName, PW FROM tk.accounts WHERE UserName = @x AND password = @y", stash))
+            using (SqlCommand command = new SqlCommand("SELECT UserName, PW FROM tk.accounts WHERE UserName = @x AND PW = @y", stash))
             {
                 command.Parameters.AddWithValue("@x", login.Username); //allows local input to avoid outside injections with sql
                 command.Parameters.AddWithValue("@y", login.Password); //allows local input to avoid outside injections with sql
@@ -147,7 +168,7 @@ namespace RepoLayer
 
                 while(ret.Read())
                 {
-                    var t = new Tickets((float)ret[0], ret.GetString(1), ret.GetString(2), (int)ret[3], (Guid)ret[4]);
+                    var t = new Tickets((decimal)ret[0], (int)ret[1], ret.GetString(2), (int)ret[3], (Guid)ret[4]);
                     listtickets.Add(t);
                 }
                     stash.Close();
@@ -161,8 +182,9 @@ namespace RepoLayer
         public async Task<Tickets> TicketStatusAppAsync(Tickets st)
         {
             SqlConnection stash = new SqlConnection("Server=tcp:mjrevatureserver.database.windows.net,1433;Initial Catalog=mjaworskiproject1;Persist Security Info=False;User ID=master;Password=REVATURubie$235;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-            using (SqlCommand command = new SqlCommand($"UPDATE tk.tickets SET TicketStatus = 1 WHERE RequestId = @m", stash))
+            using (SqlCommand command = new SqlCommand($"UPDATE tk.tickets SET TicketStatus = @s WHERE RequestId = @m", stash))
             {
+                command.Parameters.AddWithValue("@s", st.TicketStatus); //status returns a specific int that will automatically set it to approval.
                 command.Parameters.AddWithValue("@m", st.RequestId); //status returns a specific int that will automatically set it to approval.
                 stash.Open();
                 int ret = await command.ExecuteNonQueryAsync();
@@ -185,8 +207,9 @@ namespace RepoLayer
         public async Task<Tickets> TicketStatusDenAsync(Tickets st)
         {
             SqlConnection stash = new SqlConnection("Server=tcp:mjrevatureserver.database.windows.net,1433;Initial Catalog=mjaworskiproject1;Persist Security Info=False;User ID=master;Password=REVATURubie$235;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-            using (SqlCommand command = new SqlCommand($"UPDATE cl.Tickets SET TicketStatus = 2 WHERE RequestId = @m", stash))
+            using (SqlCommand command = new SqlCommand($"UPDATE cl.Tickets SET TicketStatus = @s WHERE RequestId = @m", stash))
             {
+                command.Parameters.AddWithValue("@s", st.TicketStatus);
                 command.Parameters.AddWithValue("@m", st.RequestId);
                 stash.Open();
                 int ret = await command.ExecuteNonQueryAsync();
@@ -196,7 +219,7 @@ namespace RepoLayer
                 {
                     stash.Close();
                     
-                    Tickets denied = await this.TicketStatusAppAsync(st);
+                    Tickets denied = await this.TicketStatusDenAsync(st);
                     return denied;
                 }
                 stash.Close();
@@ -204,5 +227,14 @@ namespace RepoLayer
             }
         }
 
+        public Task<ApproveDto> TicketStatusAppAsync(Guid ticketid, int approvedstatus)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<DeniedDto> TicketStatusDenAsync(Guid ticketid, int deniedstatus)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
