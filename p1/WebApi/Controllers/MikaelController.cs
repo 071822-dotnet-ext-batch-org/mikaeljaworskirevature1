@@ -6,22 +6,18 @@ using Models;
 namespace WebApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
-public class Controller : ControllerBase
+[Route("[controller]")] //TODOfix routing for all folders to properly load onto Swagger
+public class MikaelController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class APIController : ControllerBase
-    {
         private readonly DoBusiness _begin;
-        public APIController()
+        public MikaelController()
         {
             this._begin = new DoBusiness();
         }
 
 
         // logs in the user input through http requests
-        [HttpPost("loginuserasync")]
+        [HttpPost("api/LoginUserAsync")]
         public async Task<ActionResult> LoginUserAsync(Login login)
         {
             if (ModelState.IsValid)
@@ -33,7 +29,7 @@ public class Controller : ControllerBase
         }
 
         // asynchronously present the user with a new ticket object to be filled out
-        [HttpPost("create_new_ticket")]
+        [HttpPost("api/CreateTicketAsync")]
         public async Task<ActionResult> CreateTicketAsync(Tickets ticket)
         {
             if (ModelState.IsValid)
@@ -46,37 +42,35 @@ public class Controller : ControllerBase
 
 
 
-        [HttpGet("get_ticket_status")] // get all tickets
-        [HttpGet("GetStatusAsync/{status}")] // get all tickets of status
+        [HttpGet("api/GetTicketStatusAsync")] // get all tickets
+        [HttpGet("GetTicketStatusAsync/{status}")] // get all tickets of status
         public async Task<ActionResult<List<Tickets>>> GetTicketStatusAsync(int status)
         {
             List<Tickets> alltickets = await this._begin.GetTicketStatusAsync(status);
             return Ok(alltickets); //returns 200
-            //return null;
         }
 
-        [HttpPut("approve_ticket")]
-        public async Task<ActionResult<Tickets>> StatusAppAsync(Tickets approved, Managers m)
+        [HttpPut("api/StatusAppAsync")]
+        public async Task<ActionResult<Tickets>> StatusAppAsync(Tickets approved)
         {
             if (ModelState.IsValid)
             {
                 //send the tickets and managers to BusinessLayer
-                Tickets approvedTicket = await this._begin.TicketStatusAppAsync(approved, m);
+                Tickets approvedTicket = await this._begin.TicketStatusAppAsync(approved);
                 return approvedTicket;
             }
             else return Conflict(approved);
         }
         
-        [HttpPut("deny_ticket")]
-        public async Task<ActionResult<Tickets>> StatusDenAsync(Tickets denied, Managers m)
+        [HttpPut("api/StatusDenAsync")]
+        public async Task<ActionResult<Tickets>> StatusDenAsync(Tickets denied)
         {
             if (ModelState.IsValid)
             {
                 //send the tickets and managers to BusinessLayer
-                Tickets deniedTicket = await this._begin.TicketStatusDenAsync(denied, m);
+                Tickets deniedTicket = await this._begin.TicketStatusDenAsync(denied);
                 return deniedTicket;
             }
             else return Conflict(denied);
         }
     }
-}
