@@ -20,9 +20,9 @@ namespace Models
         //similar to the employee class, only uses inheritance to change the account type to 'Manager'
         public string IsManager {get; set;} = "Manager";
 
-        public static implicit operator Managers(Login l)
-        {
-            throw new NotImplementedException();
-        }
+        //public static implicit operator Managers(Login l)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
