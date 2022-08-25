@@ -3,15 +3,17 @@ namespace Models
 {
     public class ApproveDto
     {
-            public ApproveDto(Tickets approved, Managers m)
+            public ApproveDto(Tickets approved, Managers m, int status)
         {
             this.managerid = m.UserId;
-            this.ticketid = approved.RequestId;
-            this.approvedstatus = approved.TicketStatus;
+            this.requestid = approved.RequestId;
+            this.approvedstatus = status;
         }
 
+     
+
         public Guid managerid { get; set; }
-        public Guid ticketid { get; set; }
+        public Guid requestid { get; set; }
         public int approvedstatus { get; set; }
     }
 }

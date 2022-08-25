@@ -2,6 +2,7 @@ using Models;
 using RepoLayer;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System;
 
 namespace BusinessLayer
 
@@ -22,11 +23,11 @@ namespace BusinessLayer
 
         //TODOtakes the types from managers and tickets class objects and returns data from the ticket status app method in the repo
         // allows us to update the ticket status to approved if user is using a manager's account.
-        public async Task<ApproveDto> TicketStatusAppAsync(ApproveDto approve)
+        public async Task<UpdateDto> TicketStatusAppAsync(ApproveDto approve)
         {
             if (await this._repo.GetManagerAsync(approve.managerid))
             {
-                ApproveDto approvedticket = await this._repo.TicketStatusAppAsync(approve.ticketid, approve.approvedstatus);
+                UpdateDto approvedticket = await this._repo.TicketStatusAppAsync(approve.requestid, approve.approvedstatus);
                 return approvedticket;
             }
             else return null;
@@ -78,5 +79,14 @@ namespace BusinessLayer
             return login;
         }
 
+        public Task<ApproveDto> TicketStatusAppAsync(int update)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<DeniedDto> TicketStatusDenAsync(int update)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -140,7 +140,7 @@ namespace RepoLayer
                 command.Parameters.AddWithValue("@ticketamount", t.TicketAmount);
                 command.Parameters.AddWithValue("@ticketstatus", t.TicketStatus);
                 command.Parameters.AddWithValue("@notes", t.Notes);
-                command.Parameters.AddWithValue("@userfk", t.User_Fk);
+                command.Parameters.AddWithValue("@user_fk", t.User_Fk);
                 command.Parameters.AddWithValue("@requestid", t.RequestId);
                 stash.Open();
                 int ret = await command.ExecuteNonQueryAsync();
@@ -168,7 +168,7 @@ namespace RepoLayer
 
                 while(ret.Read())
                 {
-                    var t = new Tickets((decimal)ret[0], (int)ret[1], ret.GetString(2), (int)ret[3], (Guid)ret[4]);
+                    var t = new Tickets(ret.GetFloat(0), ret.GetInt32(1), ret.GetString(2), ret.GetInt32(3), ret.GetGuid(4));
                     listtickets.Add(t);
                 }
                     stash.Close();
@@ -179,13 +179,13 @@ namespace RepoLayer
 
         // changes the status of the ticket from the default "pending" to "approved"
         // pending is set to int '0'. have to change the int to '1' to set it as approved.
-        public async Task<Tickets> TicketStatusAppAsync(Tickets st)
+        public async Task<UpdateDto> TicketStatusAppAsync(Guid RequestId, int Status)
         {
             SqlConnection stash = new SqlConnection("Server=tcp:mjrevatureserver.database.windows.net,1433;Initial Catalog=mjaworskiproject1;Persist Security Info=False;User ID=master;Password=REVATURubie$235;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             using (SqlCommand command = new SqlCommand($"UPDATE tk.tickets SET TicketStatus = @s WHERE RequestId = @m", stash))
             {
-                command.Parameters.AddWithValue("@s", st.TicketStatus); //status returns a specific int that will automatically set it to approval.
-                command.Parameters.AddWithValue("@m", st.RequestId); //status returns a specific int that will automatically set it to approval.
+                command.Parameters.AddWithValue("@s", Status); //status returns a specific int that will automatically set it to approval.
+                command.Parameters.AddWithValue("@m", RequestId); //status returns a specific int that will automatically set it to approval.
                 stash.Open();
                 int ret = await command.ExecuteNonQueryAsync();
 
@@ -193,12 +193,17 @@ namespace RepoLayer
                 {
                     stash.Close();
                     
-                    Tickets approved = await this.TicketStatusAppAsync(st);
+                    UpdateDto approved = await this.TicketStatusAppAsync(RequestId);
                     return approved;
                 }
                 stash.Close();
                 return null;
             }
+        }
+
+        private Task<UpdateDto> TicketStatusAppAsync(Guid requestId)
+        {
+            throw new NotImplementedException();
         }
 
 
@@ -227,10 +232,6 @@ namespace RepoLayer
             }
         }
 
-        public Task<ApproveDto> TicketStatusAppAsync(Guid ticketid, int approvedstatus)
-        {
-            throw new NotImplementedException();
-        }
 
         public Task<DeniedDto> TicketStatusDenAsync(Guid ticketid, int deniedstatus)
         {
