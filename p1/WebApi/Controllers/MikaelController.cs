@@ -53,8 +53,6 @@ public class MikaelController : ControllerBase
         }
 
 
-
-        [HttpGet("api/GetTicketStatusAsync")] // get all tickets
         [HttpGet("GetTicketStatusAsync/{status}")] // get all tickets of status
         public async Task<ActionResult<List<Tickets>>> GetTicketStatusAsync(int status)
         {
@@ -63,12 +61,12 @@ public class MikaelController : ControllerBase
         }
 
         [HttpPut("api/StatusAppAsync")]
-        public async Task<ActionResult<ApproveDto>> StatusAppAsync(ApproveDto update)
+        public async Task<ActionResult<UpdateDto>> StatusAppAsync(ApproveDto update)
         {
             if (ModelState.IsValid)
             {
                 //send the tickets and managers to BusinessLayer
-                ApproveDto approvedTicket = await this._begin.TicketStatusAppAsync(update);
+                UpdateDto approvedTicket = await this._begin.TicketStatusAppAsync(update);
                 return approvedTicket;
             }
             else return Conflict(update);

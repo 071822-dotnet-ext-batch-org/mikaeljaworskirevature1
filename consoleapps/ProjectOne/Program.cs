@@ -21,4 +21,16 @@
 //          -logout of system
 //      reset the loop to command prompt upon task completion, UNLESS user logs out.
 
-Console.WriteLine("Hello, World!");
+public class ExceptionExample {
+  public void mayThrowException() {
+    try {
+      riskyCode(); // A
+      Console.Write("After A, ");
+    } catch(Exception e) {
+      Console.Write("Uh oh - something went wrong! ");
+    } finally {
+      Console.Write("Finally block, ");
+    }
+    Console.Write("continuing...");
+  }
+}
