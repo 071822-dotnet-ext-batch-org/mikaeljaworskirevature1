@@ -159,7 +159,7 @@ namespace RepoLayer
         public async Task<List<Tickets>> GetTicketStatusAsync(int status)
         {
             SqlConnection stash = new SqlConnection("Server=tcp:mjrevatureserver.database.windows.net,1433;Initial Catalog=mjaworskiproject1;Persist Security Info=False;User ID=master;Password=REVATURubie$235;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-            using (SqlCommand command = new SqlCommand("SELECT * FROM tk.tickets WHERE TicketStatus = @stat", stash))
+            using (SqlCommand command = new SqlCommand("SELECT TicketAmount, TicketStatus, Notes, User_Fk, RequestId FROM tk.tickets WHERE TicketStatus = @stat", stash))
             {
                 command.Parameters.AddWithValue("@stat", status);
                 stash.Open();
@@ -168,7 +168,7 @@ namespace RepoLayer
 
                 while(ret.Read())
                 {
-                    var t = new Tickets(ret.GetFloat(0), ret.GetInt32(1), ret.GetString(2), ret.GetInt32(3), ret.GetGuid(4));
+                    var t = new Tickets(ret.GetDecimal(0), ret.GetInt32(1), ret.GetString(2), ret.GetInt32(3), ret.GetGuid(4));
                     listtickets.Add(t);
                 }
                     stash.Close();
