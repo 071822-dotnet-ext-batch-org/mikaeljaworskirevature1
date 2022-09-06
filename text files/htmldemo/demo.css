@@ -1,0 +1,41 @@
+p {
+    color: blueviolet;
+}
+
+.h1-class {
+    background-color: greenyellow;
+    width: 200px;
+}
+
+.h2-class {
+    background-color: azure;
+    border: solid brown;
+}
+
+ul {
+    background-color: aqua;
+}
+
+ul #ulli {
+    /* Hex code is up to 15 0-9, a-f */
+    background-color: hsla(292, 79%, 46%, 0);
+}
+
+body {
+    background-color: bisque;
+}
+
+h5, h2 {
+    border: ridge black;
+    border-width: 5px ;
+}
+
+/* descendent selector */
+ol .oli {
+    font-size: large;
+}
+
+/* concat makes it apply to all within olli */
+ol.olli {
+    font-size: 10px;
+}
