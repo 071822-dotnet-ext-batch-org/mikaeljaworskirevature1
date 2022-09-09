@@ -135,3 +135,231 @@ console.log(`${closure1()} is how old my dog is.`);
 console.log(`${closure1()} is how old my dog is.`);
 
 
+let m1 = {
+    name1: 'Mike',
+    age: 10,
+    myDeets: function() {
+        return `${this.name1} is ${this.age} is years oooold`
+    }
+}
+
+console.log(m1.myDeets());
+
+//class instantiation
+
+let m3 = class m2 {
+    constructor(name, age) {
+        this.name1 = name,
+        this.age = age
+    }
+}
+
+let m4 =  new m3 ('Bibby', 73);
+console.log(m4.age, m4.name1, m3.name);
+let m5 = new m3('Arely', 40);
+console.log(m5.age, m5.name1);
+
+//Try Catch block, a Get Setter, and static class
+class m6 {
+    constructor(name = 'Default', age = 2) {
+        this.name1 = name,
+        this.age = age
+    }
+    get nameAndAge() {
+        return `${this.name1} is ${this.age} is years oooold` 
+    }
+
+    set setAge(v){
+        if (v > 100 | v < 1) { throw new RangeError(`That age, ${v} is invalid.`) }
+        else {
+            this.age = v;
+        }
+    }
+    static staticName = 'Mac';
+
+    static gimmeStatic(){
+        return `Do you wanna get jammed up, ${this.staticName}?`
+    }
+}; //<== are these optional?
+
+let m7 = new m6('Also Mikael', 30);
+console.log(m7.nameAndAge);
+m7.setAge = 25;
+console.log(m7.nameAndAge);
+// m7.setAge = 125
+// console.log(m7.nameAndAge); //sets a valid throw error
+console.log(m6.gimmeStatic());
+
+let m8 = new m6();
+console.log(m8.nameAndAge);
+
+let m9 = new m6('Dave');
+console.log(m9.name1, m9.age);
+
+//Inheritence
+
+class m6Inheriting extends m6 {
+    constructor(myName, page, address = '123 Sesame St.'){
+        super(myName, page);
+        this.address = address;
+    };
+};
+
+let n1 = new m6Inheriting('Larry', 37);
+console.log(`My best friend ${n1.name1} is ${n1.age} years young and lives at ${n1.address}`);
+
+const list = document.querySelector('.oli');
+console.log(list.lastElementChild.textContent);
+list.lastElementChild.classList.add('redBackground');
+
+
+//group assignment
+const xhr = new XMLHttpRequest();
+console.log(`The readystate is ${xhr.readyState}`);
+xhr.onreadystatechange = () => {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+        displayJoke1InBroswer();
+    }
+    else {
+        console.log('Jokes not ready yet.');
+    }
+}; 
+
+xhr.open('GET', 'http://api.icndb.com/jokes/226', true);
+xhr.send();
+
+function displayJoke1InBroswer(){    
+
+    console.log();
+    //under the same 'div' write 5 'p' that each have their own joke
+    let body1 = document.body
+    let myDiv1 = document.createElement('div');
+    let par1 = document.createElement('p');
+
+    myDiv1.appendChild(par1);
+    body1.appendChild(myDiv1);
+    let resText1 = JSON.parse(xhr.responseText);
+    console.log(resText1);
+    par1.textContent = resText1.value.joke;
+
+}
+
+const xhr1 = new XMLHttpRequest();
+console.log(`The readystate is ${xhr1.readyState}`);
+xhr1.onreadystatechange = () => {
+    if (xhr.readyState == 4 && xhr1.status == 200) {
+        displayJoke2InBrowser();
+    }
+    else {
+        console.log('Jokes not ready yet.');
+    }
+};
+
+xhr1.open('GET', 'http://api.icndb.com/jokes/16', true);
+xhr1.send();
+
+function displayJoke2InBrowser(){    
+
+    console.log();
+    //under the same 'div' write 5 'p' that each have their own joke
+    let body1 = document.body
+    let myDiv1 = document.createElement('div');
+    let par1 = document.createElement('p');
+
+    myDiv1.appendChild(par1);
+    body1.appendChild(myDiv1);
+    let resText1 = JSON.parse(xhr1.responseText);
+    console.log(resText1);
+    par1.textContent = resText1.value.joke;
+
+}
+
+const xhr2 = new XMLHttpRequest();
+console.log(`The readystate is ${xhr2.readyState}`);
+xhr2.onreadystatechange = () => {
+    if (xhr2.readyState == 4 && xhr2.status == 200) {
+        displayJoke3InBroswer();
+    }
+    else {
+        console.log('Jokes not ready yet.');
+    }
+};
+
+xhr2.open('GET', 'http://api.icndb.com/jokes/187', true);
+xhr2.send();
+
+function displayJoke3InBroswer(){    
+
+    console.log();
+    //under the same 'div' write 5 'p' that each have their own joke
+    let body1 = document.body
+    let myDiv1 = document.createElement('div');
+    let par1 = document.createElement('p');
+
+    myDiv1.appendChild(par1);
+    body1.appendChild(myDiv1);
+    let resText1 = JSON.parse(xhr2.responseText);
+    console.log(resText1);
+    par1.textContent = resText1.value.joke;
+
+}
+
+const xhr3 = new XMLHttpRequest();
+console.log(`The readystate is ${xhr3.readyState}`);
+xhr3.onreadystatechange = () => {
+    if (xhr3.readyState == 4 && xhr3.status == 200) {
+        displayJoke4InBroswer();
+    }
+    else {
+        console.log('Jokes not ready yet.');
+    }
+};
+
+xhr3.open('GET', 'http://api.icndb.com/jokes/323', true);
+xhr3.send();
+
+function displayJoke4InBroswer(){    
+
+    console.log();
+    //under the same 'div' write 5 'p' that each have their own joke
+    let body1 = document.body
+    let myDiv1 = document.createElement('div');
+    let par1 = document.createElement('p');
+
+    myDiv1.appendChild(par1);
+    body1.appendChild(myDiv1);
+    let resText1 = JSON.parse(xhr3.responseText);
+    console.log(resText1);
+    par1.textContent = resText1.value.joke;
+
+}
+
+const xhr4 = new XMLHttpRequest();
+console.log(`The readystate is ${xhr4.readyState}`);
+xhr4.onreadystatechange = () => {
+    if (xhr4.readyState == 4 && xhr4.status == 200) {
+        displayJoke5InBroswer();
+    }
+    else {
+        console.log('Jokes not ready yet.');
+    }
+};
+
+xhr4.open('GET', 'http://api.icndb.com/jokes/369', true);
+xhr4.send();
+
+function displayJoke5InBroswer(){    
+
+    console.log();
+    //under the same 'div' write 5 'p' that each have their own joke
+    let body1 = document.body
+    let myDiv1 = document.createElement('div');
+    let par1 = document.createElement('p');
+
+    myDiv1.appendChild(par1);
+    body1.appendChild(myDiv1);
+    let resText1 = JSON.parse(xhr4.responseText);
+    console.log(resText1);
+    par1.textContent = resText1.value.joke;
+
+}
