@@ -1,0 +1,15 @@
+{
+  "name": "mikes-node-demo",
+  "version": "1.0.0",
+  "description": "this is a node for the plebs...",
+  "main": "nodedemo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "testCommand": "echo \"This is Node.\""
+  },
+  "author": "Mike",
+  "license": "ISC",
+  "dependencies": {
+    "fs-extra": "^10.1.0"
+  }
+}
