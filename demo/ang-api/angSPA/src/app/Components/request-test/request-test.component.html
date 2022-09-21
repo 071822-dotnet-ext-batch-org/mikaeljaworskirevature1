@@ -1,10 +1,10 @@
 <p>request-test works!</p>
 
 <button (click)="displayTime()">Display Time</button>
+<button (click)="displayTodos()">Display Todos</button>
 
 <h3 *ngIf="currentTime != null"> {{ currentTime }} </h3>
 
-<button (click)="displayTodos()">Display Todos</button>
 
 <ul> 
     <li *ngFor="let todo of todos"> {{ todo.id }}: {{ todo.title }}</li>
