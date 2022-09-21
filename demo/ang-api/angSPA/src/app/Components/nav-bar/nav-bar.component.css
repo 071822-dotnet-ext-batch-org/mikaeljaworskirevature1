@@ -1,0 +1,21 @@
+* {
+    background-color: rgb(128, 177, 220);
+    color: white;
+    display: block;
+    text-align: center;
+    font-size: 12pt;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    margin: 0;
+    padding: 0;
+    float: left;
+}
+
